@@ -9,7 +9,8 @@ class Game:
 	def __init__(self, lokopizza, level):
 		self.level = level
 		self.lokopizza = lokopizza
-		mapread(self, "map{}.txt".format(level))
+		self.leveldata = mapread(self, "map{}.txt".format(level))
+		self.drawmap()
 		self.lokomotive = Lokomotive(self)
 		self.lokopizza.screen.refresh()
 		self.schienen = []
@@ -19,6 +20,7 @@ class Game:
 		self.running = True
 		pizno = 0
 		while (self.running): #unsere Hauptschleife
+			self.drawmap()
 			self.animate()
 			self.lesen()
 			self.lokomotive.move()
@@ -35,6 +37,16 @@ class Game:
 			else:
 				sleep(0.125)
 	
+	def drawmap(self):
+		y = 0
+
+		for line in self.leveldata:
+			x = 0
+			for character in line:
+				self.lokopizza.screen.addstr(y, x, character)
+				x += 1
+			y += 1
+
 	def animate(self):
 		_animations = []
 		for generator in self.animations:
